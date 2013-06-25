@@ -1,0 +1,14 @@
+base symbol,fingers,quantity,point of reference
+B,IMRP,all,
+M,IMR,all/one,
+D,MRP,all/one,ulnar
+U,IM,one/all,
+H,IP,one/all,ulnar
+A,MR,one/all,mid
+P,MP,one/all,mid/ulnar
+2,RP,one/all,ulnar/mid
+1,I,one,
+8,M,one,mid
+7,R,one,ulnar/mid
+J,P,one,ulnar
+T,T,thumb,
