@@ -6,60 +6,7 @@ class digitError(Exception):
 class jointError(Exception):
     pass
 
-
-##### variables defining phonological specifications #####
-
-digits = {"index", "middle", "ring", "pinky", "thumb"}
-
-phonoJoints = {"ext":90, "mid":45, "flex":0}
-reverseJoints = dict(reversed(item) for item in phonoJoints.items())
-
-phonoAbduction = {"abducted":30, "adducted":0, "neg. abudcted":-15}
-reverseAbduction = dict(reversed(item) for item in phonoAbduction.items())
-
-phonoOpposition = {"opposed":90, "unopposed":0}
-reverseOpposition = dict(reversed(item) for item in phonoOpposition.items())
-
 ##### checking functions that make sure values are sane
-
-def fingerCheck(members, digits = digits):
-    """Checks that members are all in the digits set"""
-    # ensure that members is a set
-    if members == None:
-        members = set()
-    elif type(members) is str:
-        members = set([members])
-    else:
-        members = set(members)
-    if not digits.issuperset(members):
-        raise digitError("At least one of the members provided is not in the digits set.")
-    return members
-
-def jointCheck(joint, joints = phonoJoints):
-    """Checks that joint is in the joints set"""
-    if joint == None:
-        joint = "ext"
-    if not joint in joints:
-        raise jointError("The joint provided is not in the joint set.")
-    return joint
-
-def abdCheck(abd, abds = phonoAbduction):
-    """Checks that joint is in the joints set"""
-    if abd == None:
-        abd = "adducted"
-    if not abd in abds:
-        raise abductionError("The abduction provided is not in the abduction set.")
-    return abd
-
-
-def oppositionCheck(oppos, oppositions = phonoOpposition):
-    """Checks that joint is in the joints set"""
-    if oppos == None:
-        oppos = "opposed"
-    if not oppos in oppositions:
-        raise oppositionError("The opposition provided is not in the opposition set.")
-    return oppos
-
 
 ##### handshape class and recursion #####
 
@@ -73,7 +20,21 @@ class handconfiguration:
         self.thumb = thumb
 
     def __repr__(self):
-        return "handshape(index=%s, middle=%s, ring=%s, pinky=%s, thumb=%s)" % (self.index, self.middle, self.ring, self.pinky, self.thumb)
+        return "handconfiguration(index=%s, middle=%s, ring=%s, pinky=%s, thumb=%s)" % (self.index, self.middle, self.ring, self.pinky, self.thumb)
+
+    def __sub__(self, other):
+        if self.index and other.index: indexDiff = self.index - other.index
+        if self.middle and other.middle: middleDiff = self.middle - other.middle
+        if self.ring and other.ring: ringDiff = self.ring - other.ring
+        if self.pinky and other.pinky: pinkyDiff = self.pinky - other.pinky
+        # if self.thumb and other.thumb: thumbDiff = self.thumb - other.thumb
+        thumbDiff = None
+        return handconfigurationDelta(index=indexDiff, middle=middleDiff, ring=ringDiff, pinky=pinkyDiff, thumb=thumbDiff)
+
+class handconfigurationDelta(handconfiguration):
+    def __repr__(self):
+        return "handconfigurationDelta(index=%s, middle=%s, ring=%s, pinky=%s, thumb=%s)" % (self.index, self.middle, self.ring, self.pinky, self.thumb)
+
 
 class finger:
     """A finger"""
@@ -110,9 +71,19 @@ class finger:
 		raise digitError("The DIP joint needs 1 degree of freedom, got %s instead." % (str(DIP.df)))
 	else:
 		self.DIP = DIP
-
+                
     def __repr__(self):
         return "finger(MCP=%s, PIP=%s, DIP=%s)" % (self.MCP, self.PIP, self.DIP)
+    
+    def __sub__(self, other):
+        if self.MCP and other.MCP: MCPDiff = self.MCP - other.MCP
+        if self.DIP and other.DIP: PIPDiff = self.PIP - other.PIP
+        if self.PIP and other.PIP: DIPDiff = self.DIP - other.DIP
+        return fingerDelta(MCP=MCPDiff, PIP=PIPDiff, DIP=DIPDiff)                
+
+class fingerDelta(finger):
+    def __repr__(self):
+        return "fingerDelta(MCP=%s, PIP=%s, DIP=%s)" % (self.MCP, self.PIP, self.DIP)
     
 class thumb:
     """the thumb"""
@@ -166,17 +137,41 @@ class joint:
 
 	    # Count the number of degrees of freedom that are being used to return the dfs.
 	    self.df = sum([int(item != None) for item in (self.dfFlex,self.dfAbd,self.dfRot )])
-	    
+
+    def __sub__(self, other):
+        dfFlexDiff = None
+        dfAbdDiff = None
+        dfRotDiff = None
+        if self.dfFlex is not None and other.dfFlex is not None: dfFlexDiff = self.dfFlex - other.dfFlex
+        if self.dfAbd is not None and other.dfAbd is not None: dfAbdDiff = self.dfAbd - other.dfAbd
+        if self.dfRot is not None and other.dfRot is not None: dfRotDiff = self.dfRot - other.dfRot
+        return jointDelta(dfFlex=dfFlexDiff, dfAbd=dfAbdDiff, dfRot=dfRotDiff)
+            
     def __repr__(self):
-        return "joint(dfFlex='%s', dfAbd='%s', dfRot='%s')" % (self.dfFlex, self.dfAbd, self.dfRot)
+        return "joint(dfFlex=%s, dfAbd=%s, dfRot=%s)" % (self.dfFlex, self.dfAbd, self.dfRot)
+
+class jointDelta(joint):
+    def __repr__(self):
+        return "jointDelta(dfFlex=%s, dfAbd=%s, dfRot=%s)" % (self.dfFlex, self.dfAbd, self.dfRot)   
 
 
 ##### testing #####
 
-index = finger(MCP=(0,0), PIP=0, DIP=0)
-middle = finger(MCP=(0,0), PIP=0, DIP=0)
+index = finger(MCP=(0,-15), PIP=0, DIP=0)
+middle = finger(MCP=(30,0), PIP=90, DIP=0)
 ring = finger(MCP=(0,0), PIP=0, DIP=0)
 pinky = finger(MCP=(0,0), PIP=0, DIP=0)
-thumb = thumb(CM=(0,0), MCP=0, IP=0)
+thmb = thumb(CM=(0,0), MCP=0, IP=0)
 
-foo = handconfiguration(index, middle, ring, pinky, thumb)
+hc1 = handconfiguration(index, middle, ring, pinky, thmb)
+
+
+index = finger(MCP=(0,0), PIP=0, DIP=0)
+middle = finger(MCP=(90,0), PIP=90, DIP=0)
+ring = finger(MCP=(90,0), PIP=0, DIP=0)
+pinky = finger(MCP=(0,0), PIP=0, DIP=0)
+thmb = thumb(CM=(0,0), MCP=0, IP=0)
+
+hc2 = handconfiguration(index, middle, ring, pinky, thumb)
+
+hcDiff = hc2-hc1

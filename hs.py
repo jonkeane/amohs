@@ -1,5 +1,6 @@
-##### Error classes #####
+import hc
 
+##### Error classes #####
 class digitError(Exception):
     pass
 
@@ -17,7 +18,7 @@ class oppositionError(Exception):
 
 digits = {"index", "middle", "ring", "pinky", "thumb"}
 
-phonoJoints = {"ext":90, "mid":45, "flex":0}
+phonoJoints = {"ext":0, "mid":45, "flex":90}
 reverseJoints = dict(reversed(item) for item in phonoJoints.items())
 
 phonoAbduction = {"abducted":30, "adducted":0, "neg. abudcted":-15}
@@ -89,6 +90,27 @@ class handshape:
         if self.NSF and len(self.NSF.members) == 0:
             self.NSF.members = None
 
+    def toHandconfigTarget(self):
+        handconfig = {
+        "index" : None,
+        "middle" : None,
+        "ring" : None,
+        "pinky" : None,
+        "thumb" : None
+        }
+        
+        for finger in self.SF.members:
+            #self.SF.MCP.angleTarget()
+            #self.SF.PIP.angleTarget()
+            #self.SF.abd.angleTarget()
+            handconfig[finger] = hc.finger(
+                MCP=hc.joint(dfFlex=phonoJoints[self.SF.MCP.value],
+                             dfAbd=phonoAbduction[self.SF.abd.value]),
+                PIP=hc.joint(dfFlex=phonoJoints[self.SF.PIP.value]),
+                DIP=hc.joint(dfFlex=phonoJoints[self.SF.PIP.value])
+                )
+        return  hc.handconfiguration(handconfig["index"], handconfig["middle"], handconfig["ring"], handconfig["pinky"], handconfig["thumb"] )
+        
     def __repr__(self):
         return "handshape(selectedFingers=%s, secondarySelectedFingers=%s, thumb=%s, nonSelectedFingers=%s)" % (self.SF, self.SSF, self.thumb, self.NSF)
 
@@ -322,8 +344,10 @@ class abduction:
 ##### testing #####
 
 foo = handshape(
-    selectedFingers = selectedFingers(members = "pinky", MCP=joint("ext"), PIP="ext", abd=abduction("adducted")),
-    secondarySelectedFingers = secondarySelectedFingers(members=["index"], MCP=None, PIP=None, abd=None),
+    selectedFingers = selectedFingers(members = ["index", "middle"], MCP=joint("ext"), PIP="ext", abd=abduction("adducted")),
+    secondarySelectedFingers = None,
     thumb = thumb(oppos=None),
     nonSelectedFingers = nonSelectedFingers(joints="flex")
     )
+
+bar = foo.toHandconfigTarget()
