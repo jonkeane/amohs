@@ -297,5 +297,10 @@ class pmHandshape:
 
 ##### test #####
 
-#foo = amohs.pm.pmHandshape("1;/")
-#foo.toAMhandshape()
+foo = pmHandshape("1;#")
+bar = foo.toAMhandshape()
+baz = bar.toHandconfigTarget()
+
+foo1 = pmHandshape("DT@;/")
+bar1 = foo1.toAMhandshape()
+baz1 = bar1.toHandconfigTarget()

@@ -18,10 +18,10 @@ class oppositionError(Exception):
 
 digits = {"index", "middle", "ring", "pinky", "thumb"}
 
-phonoJoints = {"ext":0, "mid":45, "flex":90}
+phonoJoints = {"ext":0, "midExt":30, "mid":45, "midFlex":60, "flex":90}
 reverseJoints = dict(reversed(item) for item in phonoJoints.items())
 
-phonoAbduction = {"abducted":30, "adducted":0, "neg. abudcted":-15}
+phonoAbduction = {"abducted":30, "neutralAbducted":15, "adducted":0, "negativeAbducted":-15}
 reverseAbduction = dict(reversed(item) for item in phonoAbduction.items())
 
 phonoOpposition = {"opposed":90, "unopposed":0}
@@ -100,19 +100,47 @@ class handshape:
         }
         
         for finger in self.SF.members:
-            #self.SF.MCP.angleTarget()
-            #self.SF.PIP.angleTarget()
-            #self.SF.abd.angleTarget()
             handconfig[finger] = hc.finger(
                 MCP=hc.joint(dfFlex=phonoJoints[self.SF.MCP.value],
                              dfAbd=phonoAbduction[self.SF.abd.value]),
                 PIP=hc.joint(dfFlex=phonoJoints[self.SF.PIP.value]),
                 DIP=hc.joint(dfFlex=phonoJoints[self.SF.PIP.value])
                 )
+        if self.SSF is not None:
+            for finger in self.SSF.members:
+                handconfig[finger] = hc.finger(
+                    MCP=hc.joint(dfFlex=phonoJoints[self.SSF.MCP.value],
+                             dfAbd=phonoAbduction["adducted"]),
+                    PIP=hc.joint(dfFlex=phonoJoints[self.SSF.PIP.value]),
+                    DIP=hc.joint(dfFlex=phonoJoints[self.SSF.PIP.value])
+                    )
+
+        if self.NSF is not None:
+            for finger in self.NSF.members:
+                if self.NSF.joints.value == "ext":
+                    NSFAbd = phonoAbduction["neutralAbducted"]
+                else:
+                    NSFAbd = phonoAbduction["adducted"]
+                    
+                handconfig[finger] = hc.finger(
+                    MCP=hc.joint(dfFlex=phonoJoints[self.NSF.joints.value],
+                             dfAbd=NSFAbd),
+                    PIP=hc.joint(dfFlex=phonoJoints[self.NSF.joints.value]),
+                    DIP=hc.joint(dfFlex=phonoJoints[self.NSF.joints.value])
+                    )
+
+        # Check!
         return  hc.handconfiguration(handconfig["index"], handconfig["middle"], handconfig["ring"], handconfig["pinky"], handconfig["thumb"] )
         
     def __repr__(self):
-        return "handshape(selectedFingers=%s, secondarySelectedFingers=%s, thumb=%s, nonSelectedFingers=%s)" % (self.SF, self.SSF, self.thumb, self.NSF)
+        return "%s(selectedFingers=%r, secondarySelectedFingers=%r, thumb=%r, nonSelectedFingers=%r)" % (self.__class__.__name__, self.SF, self.SSF, self.thumb, self.NSF)
+    def __str__(self):
+        return """Handshape:
+Selected Fingers: %s
+Secondary Selected Fingers: %s
+Thumb: %s
+Non Selected Fingers: %s
+""" % (self.SF, self.SSF, self.thumb, self.NSF)
 
 class selectedFingers:
     """The selected fingers"""
@@ -146,8 +174,14 @@ class selectedFingers:
             self.abd = abduction(abd)
 
     def __repr__(self):
-        return "selectedFingers(members=%s, MCP=%s, PIP=%s, abd=%s)" % (self.members, self.MCP, self.PIP, self.abd)
-
+        return "%s(members=%r, MCP=%r, PIP=%r, abd=%r)" % (self.__class__.__name__, self.members, self.MCP, self.PIP, self.abd)
+    def __str__(self):
+        return """
+  members: %s
+  MCP: %s
+  PIP: %s
+  abd: %s""" % (self.members, self.MCP, self.PIP, self.abd)
+    
 class secondarySelectedFingers:
     """The secondary selected fingers"""
     def __init__(self, members=None, MCP=None, PIP=None, abd=None):
@@ -186,8 +220,14 @@ class secondarySelectedFingers:
             self.abd = None
             
     def __repr__(self):
-        return "secondarySelectedFingers(members=%s, MCP=%s, PIP=%s, abd=%s)" % (self.members, self.MCP, self.PIP, self.abd)
-
+        return "%s(members=%r, MCP=%r, PIP=%r, abd=%r)" % (self.__class__.__name__, self.members, self.MCP, self.PIP, self.abd)
+    def __str__(self):
+        return """
+  members: %s
+  MCP: %s
+  PIP: %s
+  abd: %s
+""" % (self.members, self.MCP, self.PIP, self.abd)
     
 class thumb:
     """the thumb"""
@@ -197,7 +237,11 @@ class thumb:
         else:
             self.oppos = opposition(oppos)
     def __repr__(self):
-        return "thumb(oppos=%s)" % (self.oppos)
+        return "%s(oppos=%r)" % (self.__class__.__name__, self.oppos)
+    def __str__(self):
+        return """"
+  Opposition: %s
+""" % (self.oppos)
     
 class nonSelectedFingers:
     """the non selected fingers"""
@@ -219,7 +263,12 @@ class nonSelectedFingers:
         ##     self.joints = None
         
     def __repr__(self):
-        return "nonSelectedFingers(joints=%s, members=%s)" % (self.joints, self.members)
+        return "%s(joints=%r, members=%r)" % (self.__class__.__name__, self.joints, self.members)
+    def __str__(self):
+        return """
+  members: %s
+  joints: %s
+""" % (self.members, self.joints)
 
 
 
@@ -227,127 +276,57 @@ class nonSelectedFingers:
 
 class joint:
     """a joint object"""
-    def __init__(self, value, kind="Phonological feature"):
-        if kind == "Phonological feature":
-            try:
-                value = jointCheck(value, joints = phonoJoints)
-            except jointError:
-                print("The joint is not in the set of phonologically specified joint features.")
-                raise
-        elif kind == "Angle target":
-            try:
-                value = jointCheck(value, joints = reverseJoints)
-            except jointError:
-                print("The joint is not in the set of phonologically specified joint angle targets.")
-                raise
+    def __init__(self, value):
+        try:
+            value = jointCheck(value, joints = phonoJoints)
+        except jointError:
+            print("The joint is not in the set of phonologically specified joint features.")
+            raise
         self.value = value
-        self.kind = kind
-
-    def angleTarget(self):
-        try:
-            self.value = phonoJoints[self.value]
-        except KeyError:
-            print("The phonological target is not one of the specified joint features.")
-            raise
-        self.kind = "Angle target"
-
-    def phonoFeature(self):
-        try:
-            self.value = reverseJoints[self.value]
-        except KeyError:
-            print("The angle is not one of the specified phonological targets.")
-            raise
-        self.kind = "Phonological feature"
 
     def __repr__(self):
-        return "joint(value='%s', kind='%s')" % (self.value, self.kind)
-
+        return "%s(value=%r)" % (self.__class__.__name__, self.value)
+    def __str__(self):
+        return "%s" % (self.value)
 
 class opposition:
     """an oppotision object"""
-    def __init__(self, value, kind="Phonological feature"):
-        if kind == "Phonological feature":
-            try:
-                value = oppositionCheck(value, oppositions = phonoOpposition)
-            except oppositionError:
-                print("The opposition is not in the set of phonologically specified opposition features.")
-                raise
-        elif kind == "Angle target":
-            try:
-                value = oppositionCheck(value, oppositions = reverseOpposition)
-            except oppositionError:
-                print("The opposition is not in the set of phonologically specified opposition angle targets.")
-                raise
+    def __init__(self, value):
+        try:
+            value = oppositionCheck(value, oppositions = phonoOpposition)
+        except oppositionError:
+            print("The opposition is not in the set of phonologically specified opposition features.")
+            raise
         self.value = value
-        self.kind = kind
-
-    def angleTarget(self):
-        try:
-            self.value = phonoOpposition[self.value]
-        except KeyError:
-            print("The phonological target is not one of the specified opposition features.")
-            raise
-        self.kind = "Angle target"
-
-    def phonoFeature(self):
-        try:
-            self.value = reverseOpposition[self.value]
-        except KeyError:
-            print("The angle is not one of the specified phonological targets.")
-            raise
-        self.kind = "Phonological feature"
 
     def __repr__(self):
-        return "opposition(value='%s', kind='%s')" % (self.value, self.kind)
-
+        return "%s(value=%r)" % (self.__class__.__name__, self.value)
+    def __str__(self):
+        return "%s" % (self.value)
 
 class abduction:
     """a abduction object"""
-    def __init__(self, value, kind="Phonological feature"):
-        if kind == "Phonological feature":
-            try:
-                value = abdCheck(value, abds = phonoAbduction)
-            except abductionError:
-                print("The abduction is not in the set of phonologically specified abduction features.")
-                raise
-        elif kind == "Angle target":
-            try:
-                value = abdCheck(value, abds = reverseAbduction)
-            except abductionError:
-                print("The abduction is not in the set of phonologically specified abduction angle targets.")
-                raise
+    def __init__(self, value):
+        try:
+            value = abdCheck(value, abds = phonoAbduction)
+        except abductionError:
+            print("The abduction is not in the set of phonologically specified abduction features.")
+            raise
         self.value = value
-        self.kind = kind
-
-        
-    def angleTarget(self):
-        try:
-            self.value = phonoAbduction[self.value]
-        except KeyError:
-            print("The phonological target is not one of the specified abduction features.")
-            raise
-        self.kind = "Angle target"
-        
-    def phonoFeature(self):
-        try:
-            self.value = reverseAbduction[self.value]
-        except KeyError:
-            print("The angle is not one of the specified phonological targets.")
-            raise
-        self.kind = "Phonological feature"
         
     def __repr__(self):
-        return "abduction(value='%s', kind='%s')" % (self.value, self.kind)
-    
+        return "%s(value=%r)" % (self.__class__.__name__, self.value)
+    def __str__(self):
+        return "%s" % (self.value)    
 
 
 ##### testing #####
 
-foo = handshape(
-    selectedFingers = selectedFingers(members = ["index", "middle"], MCP=joint("ext"), PIP="ext", abd=abduction("adducted")),
-    secondarySelectedFingers = None,
-    thumb = thumb(oppos=None),
-    nonSelectedFingers = nonSelectedFingers(joints="flex")
-    )
+## foo = handshape(
+##     selectedFingers = selectedFingers(members = ["index", "middle"], MCP=joint("ext"), PIP="ext", abd=abduction("adducted")),
+##     secondarySelectedFingers = None,
+##     thumb = thumb(oppos=None),
+##     nonSelectedFingers = nonSelectedFingers(joints="flex")
+##     )
 
-bar = foo.toHandconfigTarget()
+## bar = foo.toHandconfigTarget()

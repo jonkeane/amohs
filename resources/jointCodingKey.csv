@@ -1,7 +1,7 @@
 psf,ssf,nsf,joint config,pmfeatures,MCP,PIP,abd
 empty,empty,/,extended,,ext,ext,add
-c,None,None,curved-open (narrow),nonbase+base,mid,mid,add
-(,None,None,curved-open(wide),nonbase+base,mid,mid,add
+c,None,None,curved-open (narrow),nonbase+base,midFlex,mid,add
+(,None,None,curved-open(wide),nonbase+base,midExt,mid,add
 o,o,None,curved-closed,flex+nonbase+base or (flex+base)+nonbase,flex,mid,add
 <,None,None,flat-open,base,mid,ext,add
 >,None,None,flat-closed,flex+base,flex,ext,add

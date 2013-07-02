@@ -20,7 +20,14 @@ class handconfiguration:
         self.thumb = thumb
 
     def __repr__(self):
-        return "handconfiguration(index=%s, middle=%s, ring=%s, pinky=%s, thumb=%s)" % (self.index, self.middle, self.ring, self.pinky, self.thumb)
+        return "%s(index=%r, middle=%r, ring=%r, pinky=%r, thumb=%r)" % (self.__class__.__name__, self.index, self.middle, self.ring, self.pinky, self.thumb)
+    def __str__(self):
+        return """Handconfiguration:
+index: %s
+middle: %s
+ring: %s
+pinky: %s
+thumb: %s""" % (self.index, self.middle, self.ring, self.pinky, self.thumb)    
 
     def __sub__(self, other):
         if self.index and other.index: indexDiff = self.index - other.index
@@ -32,8 +39,7 @@ class handconfiguration:
         return handconfigurationDelta(index=indexDiff, middle=middleDiff, ring=ringDiff, pinky=pinkyDiff, thumb=thumbDiff)
 
 class handconfigurationDelta(handconfiguration):
-    def __repr__(self):
-        return "handconfigurationDelta(index=%s, middle=%s, ring=%s, pinky=%s, thumb=%s)" % (self.index, self.middle, self.ring, self.pinky, self.thumb)
+    pass
 
 
 class finger:
@@ -73,7 +79,12 @@ class finger:
 		self.DIP = DIP
                 
     def __repr__(self):
-        return "finger(MCP=%s, PIP=%s, DIP=%s)" % (self.MCP, self.PIP, self.DIP)
+        return "%s(MCP=%r, PIP=%r, DIP=%r)" % (self.__class__.__name__, self.MCP, self.PIP, self.DIP)
+    def __str__(self):
+        return """
+  MCP: %s
+  PIP: %s
+  DIP: %s""" % (self.MCP, self.PIP, self.DIP)
     
     def __sub__(self, other):
         if self.MCP and other.MCP: MCPDiff = self.MCP - other.MCP
@@ -83,7 +94,7 @@ class finger:
 
 class fingerDelta(finger):
     def __repr__(self):
-        return "fingerDelta(MCP=%s, PIP=%s, DIP=%s)" % (self.MCP, self.PIP, self.DIP)
+        return "%s(MCP=%r, PIP=%r, DIP=%r)" % (self.__class__.__name__, self.MCP, self.PIP, self.DIP)
     
 class thumb:
     """the thumb"""
@@ -122,7 +133,7 @@ class thumb:
 		self.IP = IP
 	    
     def __repr__(self):
-        return "thumb(CM=%s, MCP=%s, IP=%s)" % (self.CM, self.MCP, self.IP)
+        return "%s(CM=%r, MCP=%r, IP=%r)" % (self.__class__.__name__, self.CM, self.MCP, self.IP)
 
 ##### abstract articulator classes #####
 
@@ -148,11 +159,12 @@ class joint:
         return jointDelta(dfFlex=dfFlexDiff, dfAbd=dfAbdDiff, dfRot=dfRotDiff)
             
     def __repr__(self):
-        return "joint(dfFlex=%s, dfAbd=%s, dfRot=%s)" % (self.dfFlex, self.dfAbd, self.dfRot)
-
+        return "%s(dfFlex=%r, dfAbd=%r, dfRot=%r)" % (self.__class__.__name__, self.dfFlex, self.dfAbd, self.dfRot)
+    def __str__(self):
+        return """dfFlex: %s, dfAbd: %s, dfRot: %s""" % (self.dfFlex, self.dfAbd, self.dfRot)
+    
 class jointDelta(joint):
-    def __repr__(self):
-        return "jointDelta(dfFlex=%s, dfAbd=%s, dfRot=%s)" % (self.dfFlex, self.dfAbd, self.dfRot)   
+    pass
 
 
 ##### testing #####
