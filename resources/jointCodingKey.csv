@@ -1,11 +1,16 @@
-psf,ssf,nsf,joint config,pmfeatures,MCP,PIP,abd
-empty,empty,/,extended,,ext,ext,add
-c,None,None,curved-open (narrow),nonbase+base,midFlex,mid,add
-(,None,None,curved-open(wide),nonbase+base,midExt,mid,add
-o,o,None,curved-closed,flex+nonbase+base or (flex+base)+nonbase,flex,mid,add
-<,None,None,flat-open,base,mid,ext,add
->,None,None,flat-closed,flex+base,flex,ext,add
-[,None,None,bent,flex+nonbase,ext,flex,add
-@,@,#,closed,flex,flex,flex,add
-?1,?1,?1,?,(flex+nonbase)+base,mid,flex,add
-?2,?2,?1,bent?,nonbase,ext,mid,add
+psf,ssf,nsf,joint config,pmfeatures,MCP,PIP,abd,
+empty,empty,/,extended,,ext,ext,add,
+c,None,None,curved-open (narrow),nonbase+base,midFlex,mid,add,
+(,None,None,curved-open(wide),nonbase+base,midExt,mid,add,
+o,o,None,curved-closed,flex+nonbase+base or (flex+base)+nonbase,flex,mid,add,
+<,None,None,flat-open,base,mid,ext,add,
+>,None,None,flat-closed,flex+base,flex,ext,add,
+[,None,None,bent,flex+nonbase,ext,flex,add,
+@,@,#,closed,flex,flex,flex,add,
+?1,?1,?1,bent?,?,ext,mid,add,not in HS coding article
+?2,?2,?1,?,?,mid,mid,add,not in HS coding article
+?3,?3,?1,?,?,mid,flex,add,not in HS coding article
+?4,?4,?1,?,?,midFlex,ext,add,not in HS coding article
+?5,?5,?1,?,?,midFlex,flex,add,not in HS coding article
+?6,?6,?1,?,?,midExt,ext,add,not in HS coding article
+?7,?7,?1,?,?,midExt,flex,add,not in HS coding article

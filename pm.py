@@ -1,62 +1,27 @@
-import csv
 import hs
-
-# this is not zip safe, see: http://stackoverflow.com/questions/1011337/relative-file-paths-in-python-packages
+import funcs
+import csv
 from os import path
-resources_dir = path.join(path.dirname(__file__), 'resources')
 
 class notationError(Exception):
     pass
 
-##### read in csvs containing information about the prosodic model notation system. #####
+fingerCodingKeyFile =path.join(funcs.resources_dir,'fingerCodingKey.csv')
+fingerCodingKey = funcs.read_csv_data(fingerCodingKeyFile)
+fingerCodingCols = funcs.dictToCols(fingerCodingKey)
+bsfingerCodingCols = funcs.dictColMapper(fingerCodingKey, "base symbol")
 
-def read_csv_data(path):
-    """
-        Reads CSV from given path and Return list of dict with Mapping
-    """
-    data = csv.reader(open(path))
-    # Read the column names from the first line of the file
-    fields = data.next()
-    data_lines = []
-    for row in data:
-        items = dict(zip(fields, row))
-        data_lines.append(items)
-    return data_lines
+jointCodingKeyFile =path.join(funcs.resources_dir,'jointCodingKey.csv')
+jointCodingKey = funcs.read_csv_data(jointCodingKeyFile)
+jointCodingCols = funcs.dictToCols(jointCodingKey)
+psfjointCodingCols = funcs.dictColMapper(jointCodingKey, "psf")
+ssfjointCodingCols = funcs.dictColMapper(jointCodingKey, "ssf")
+nsfjointCodingCols = funcs.dictColMapper(jointCodingKey, "nsf")
 
-def dictToCols(dictObject):
-    outCols = {}
-    for col in dictObject[0].keys():
-        outCols[col] = []
-    for row in dictObject:
-        for col in dictObject[0].keys():
-            outCols[col].append(row[col])
-    return outCols
-
-def dictColMapper(dictObject, baseCol):
-    outCols = {}
-    for row in dictObject:
-        outCols[row[baseCol]] = {}
-        for col in dictObject[0].keys():
-            if col != baseCol:
-                outCols[row[baseCol]][col] = row[col]
-    return outCols
-
-fingerCodingKeyFile =path.join(resources_dir,'fingerCodingKey.csv')
-fingerCodingKey = read_csv_data(fingerCodingKeyFile)
-fingerCodingCols = dictToCols(fingerCodingKey)
-bsfingerCodingCols = dictColMapper(fingerCodingKey, "base symbol")
-
-jointCodingKeyFile =path.join(resources_dir,'jointCodingKey.csv')
-jointCodingKey = read_csv_data(jointCodingKeyFile)
-jointCodingCols = dictToCols(jointCodingKey)
-psfjointCodingCols = dictColMapper(jointCodingKey, "psf")
-ssfjointCodingCols = dictColMapper(jointCodingKey, "ssf")
-nsfjointCodingCols = dictColMapper(jointCodingKey, "nsf")
-
-abdCodingKeyFile = path.join(resources_dir,'abdCodingKey.csv')
-abdCodingKey = read_csv_data(abdCodingKeyFile)
-abdCodingCols = dictToCols(abdCodingKey)
-psfabdCodingCols = dictColMapper(abdCodingKey, "psf")
+abdCodingKeyFile = path.join(funcs.resources_dir,'abdCodingKey.csv')
+abdCodingKey = funcs.read_csv_data(abdCodingKeyFile)
+abdCodingCols = funcs.dictToCols(abdCodingKey)
+psfabdCodingCols = funcs.dictColMapper(abdCodingKey, "psf")
 
 def shortToMember(string):
     map = {'I': 'index',
@@ -296,11 +261,12 @@ class pmHandshape:
         return AMhandshape
 
 ##### test #####
-
-foo = pmHandshape("1;#")
-bar = foo.toAMhandshape()
-baz = bar.toHandconfigTarget()
-
-foo1 = pmHandshape("DT@;/")
-bar1 = foo1.toAMhandshape()
-baz1 = bar1.toHandconfigTarget()
+# 
+# foo = pmHandshape("1;#")
+# bar = foo.toAMhandshape()
+# baz = bar.toHandconfigTarget()
+# 
+# foo1 = pmHandshape("DT@;/")
+# bar1 = foo1.toAMhandshape()
+# print(bar1)
+# baz1 = bar1.toHandconfigTarget()
