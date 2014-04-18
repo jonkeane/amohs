@@ -30,8 +30,9 @@ reverseAbduction = dict(reversed(item) for item in phonoThumbAbduction.items())
 phonoOpposition = {"opposed":90, "unopposed":0}
 reverseOpposition = dict(reversed(item) for item in phonoOpposition.items())
 
-phonoOrientations = {"default": (0,0,180), "defaultFS":(-10,0,180), "palmIn":(30,5,0), "palmDown":(30,0,180)}
+phonoOrientations = {"default": (0,0,180), "defaultFS":(-10,0,180), "palmIn":(30,5,90), "palmDown":(30,0,180)}
 reverseOrientations = dict(reversed(item) for item in phonoOrientations.items())
+
 ##### checking functions that make sure values are sane
 
 def fingerCheck(members, digits = digits):
