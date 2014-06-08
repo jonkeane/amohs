@@ -21,16 +21,28 @@ digits = {"index", "middle", "ring", "pinky", "thumb"}
 phonoJoints = {"ext":180, "midExt":150, "mid":135, "midFlex":120, "flex":90}
 reverseJoints = dict(reversed(item) for item in phonoJoints.items())
 
-phonoAbduction = {"abducted":30, "neutralAbducted":15, "adducted":0, "negativeAbducted":-15}
-reverseAbduction = dict(reversed(item) for item in phonoAbduction.items())
+phonoAbduction = {"index": {"abducted":20, "neutralAbducted":10, "adducted":0, "negativeAbducted":-10},
+                  "middle": {"abducted":0, "neutralAbducted":5, "adducted":0, "negativeAbducted":10},
+                  "ring": {"abducted":-10, "neutralAbducted":-5, "adducted":0, "negativeAbducted":10},
+                  "pinky": {"abducted":-20, "neutralAbducted":-10, "adducted":0, "negativeAbducted":10},
+                  # "thumb": {"abducted":45, "neutralAbducted":30, "adducted":20, "negativeAbducted":5}} 
+                   "thumb": {"abducted":{"opposed": None,
+                                         "unopposed": (15, 27, 9)}, #l
+                             "neutralAbducted":{"opposed": None,
+                                         "unopposed": None},
+                             "adducted":{"opposed": (-22,  13, -27), #c
+                                         "unopposed": (23,  8, 0)},#g (a?)
+                             "negativeAbducted":{"opposed": None,
+                                         "unopposed": (-34, -24, -53)}#b
+                              }
+                    }
+                    
+#phonoThumbAbduction = {"abducted":45, "neutralAbducted":20, "adducted":10, "negativeAbducted":-20}
 
-phonoThumbAbduction = {"abducted":90, "neutralAbducted":45, "adducted":0, "negativeAbducted":-45}
-reverseAbduction = dict(reversed(item) for item in phonoThumbAbduction.items())
-
-phonoOpposition = {"opposed":90, "unopposed":0}
+phonoOpposition = {"opposed":-60, "unopposed":-10}
 reverseOpposition = dict(reversed(item) for item in phonoOpposition.items())
 
-phonoOrientations = {"default": (0,0,180), "defaultFS":(-10,0,180), "palmIn":(30,5,90), "palmDown":(30,0,180)}
+phonoOrientations = {"default": (0,0,0), "defaultFS":(-10,0,0), "palmIn":(-75,0,80), "palmDown":(-75,0,0)}
 reverseOrientations = dict(reversed(item) for item in phonoOrientations.items())
 
 ##### checking functions that make sure values are sane
@@ -122,43 +134,49 @@ class handshape:
             if finger !=  "thumb":
                 handconfig[finger] = hc.finger(
                     MCP=hc.joint(dfFlex=phonoJoints[self.SF.MCP.value],
-                             dfAbd=phonoAbduction[self.SF.abd.value]),
+                             dfAbd=phonoAbduction[finger][self.SF.abd.value]),
                     PIP=hc.joint(dfFlex=phonoJoints[self.SF.PIP.value]),
                     DIP=hc.joint(dfFlex=phonoJoints[self.SF.PIP.value])
-                    )
+                )
             else:
                 handconfig[finger] = hc.thumb(
-                    MCP=hc.joint(dfFlex=phonoJoints[self.SF.PIP.value]),
+                    MCP=hc.joint(dfFlex=phonoJoints[self.SF.MCP.value]),
                     IP=hc.joint(dfFlex=phonoJoints[self.SF.PIP.value]),
-                    CM=hc.joint(dfFlex=None,dfAbd=phonoThumbAbduction[self.SF.abd.value],dfRot=phonoOpposition[self.thumb.oppos.value])
-                    )                
+                    CM=hc.joint(
+                            dfFlex=phonoAbduction[finger][self.SF.abd.value][self.thumb.oppos.value][0],
+                            dfAbd=phonoAbduction[finger][self.SF.abd.value][self.thumb.oppos.value][2],
+                            dfRot=phonoAbduction[finger][self.SF.abd.value][self.thumb.oppos.value][1])
+                )                
         if self.SSF is not None:
             for finger in self.SSF.members:
                 if finger !=  "thumb":
                     handconfig[finger] = hc.finger(
                         MCP=hc.joint(dfFlex=phonoJoints[self.SSF.MCP.value],
-                             dfAbd=phonoAbduction[self.SSF.abd.value]),
+                             dfAbd=phonoAbduction[finger][self.SSF.abd.value]),
                     	PIP=hc.joint(dfFlex=phonoJoints[self.SSF.PIP.value]),
                     	DIP=hc.joint(dfFlex=phonoJoints[self.SSF.PIP.value])
-                    	)
+                    )
             	else:	
                 	handconfig[finger] = hc.thumb(
-                    	MCP=hc.joint(dfFlex=phonoJoints[self.SSF.PIP.value]),
+                    	MCP=hc.joint(dfFlex=phonoJoints[self.SSF.MCP.value]),
                     	IP=hc.joint(dfFlex=phonoJoints[self.SSF.PIP.value]),
-                    	CM=hc.joint(dfFlex=None,dfAbd=phonoThumbAbduction[self.SSF.abd.value],
-							dfRot=phonoOpposition[self.thumb.oppos.value])
-                    	)  
+                    	CM=hc.joint(                    
+                                dfFlex=phonoAbduction[finger][self.SSF.abd.value][self.thumb.oppos.value][0],
+                                dfAbd=phonoAbduction[finger][self.SSF.abd.value][self.thumb.oppos.value][2],
+                                dfRot=phonoAbduction[finger][self.SSF.abd.value][self.thumb.oppos.value][1])
+                    )  
 
         if self.NSF is not None:
             for finger in self.NSF.members:
                 if self.NSF.joints.value == "ext":
                     NSFAbd = "neutralAbducted"
+                    NSFAbd = "abducted"
                 else:
                     NSFAbd = "adducted"
                 if finger !=  "thumb":
                     handconfig[finger] = hc.finger(
                         MCP=hc.joint(dfFlex=phonoJoints[self.NSF.joints.value],
-                             dfAbd=phonoAbduction[NSFAbd]),
+                             dfAbd=phonoAbduction[finger][NSFAbd]),
                         PIP=hc.joint(dfFlex=phonoJoints[self.NSF.joints.value]),
                         DIP=hc.joint(dfFlex=phonoJoints[self.NSF.joints.value])
                         )
@@ -166,8 +184,10 @@ class handshape:
                     handconfig[finger] = hc.thumb(
                         MCP=hc.joint(dfFlex=phonoJoints[self.NSF.joints.value]),
                         IP=hc.joint(dfFlex=phonoJoints[self.NSF.joints.value]),
-                        CM=hc.joint(dfFlex=None,dfAbd=phonoThumbAbduction[NSFAbd],
-							dfRot=phonoOpposition["unopposed"])
+                    	CM=hc.joint(                    
+                                dfFlex=phonoAbduction[finger][NSFAbd]["unopposed"][0],
+                                dfAbd=phonoAbduction[finger][NSFAbd]["unopposed"][2],
+                                dfRot=phonoAbduction[finger][NSFAbd]["unopposed"][1])
                         )
         # Check!
         return  hc.handconfiguration(handconfig["index"], handconfig["middle"], handconfig["ring"], handconfig["pinky"], handconfig["thumb"] )
@@ -348,7 +368,7 @@ class abduction:
     """a abduction object"""
     def __init__(self, value):
         try:
-            value = abdCheck(value, abds = phonoAbduction)
+            value = abdCheck(value, abds = phonoAbduction["index"]) # the index is hard coded here for the check to work, this is a little weird and should be abstracted.
         except abductionError:
             print("The abduction is not in the set of phonologically specified abduction features.")
             raise

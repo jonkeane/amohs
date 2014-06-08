@@ -171,11 +171,11 @@ class thumb:
 	if isinstance(CM, joint):
 		CM = CM
         else:
-		if ((type(CM) is list) or (type(CM) is tuple)) and len(CM) == 2:
-			CM = joint(dfFlex=CM[0], dfAbd=CM[1])
+		if ((type(CM) is list) or (type(CM) is tuple)) and len(CM) == 3:
+			CM = joint(dfFlex=CM[0], dfAbd=CM[1], dfRot=CM[2])
 		else:
 			raise digitError("The CM joint needs a list or tuple with exactly 2 degrees of freedom specified, got %s instead." % (str(CM)))
-	if CM.df != 2:
+	if CM.df != 3:
 		raise digitError("The CM joint needs 2 degrees of freedom, got %s instead." % (str(CM.df)))
 	else:
 		self.CM = CM
@@ -291,7 +291,7 @@ index = finger(MCP=(0,-15), PIP=0, DIP=0)
 middle = finger(MCP=(30,0), PIP=90, DIP=0)
 ring = finger(MCP=(0,0), PIP=0, DIP=0)
 pinky = finger(MCP=(0,0), PIP=0, DIP=0)
-thmb = thumb(CM=(0,0), MCP=0, IP=0)
+thmb = thumb(CM=(0,0,0), MCP=0, IP=0)
 wrist = (0,0,0)
 
 hc1 = handconfiguration(index, middle, ring, pinky, thmb)
@@ -302,7 +302,7 @@ index = finger(MCP=(0,0), PIP=0, DIP=0)
 middle = finger(MCP=(90,0), PIP=90, DIP=0)
 ring = finger(MCP=(90,0), PIP=0, DIP=0)
 pinky = finger(MCP=(0,0), PIP=0, DIP=0)
-thmb = thumb(CM=(0,0), MCP=0, IP=0)
+thmb = thumb(CM=(0,0,0), MCP=0, IP=0)
 wrist = (0,0,0)
 
 hc2 = handconfiguration(index, middle, ring, pinky, thmb)
