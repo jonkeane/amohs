@@ -167,7 +167,7 @@ class fingerDelta(finger):
 class thumb:
     """the thumb"""
     def __init__(self, CM, MCP, IP):
-        # ensure the that CM is a joint instance, and has 2 degrees of freedom specified.
+        # ensure the that CM is a joint instance, and has 3 degrees of freedom specified.
 	if isinstance(CM, joint):
 		CM = CM
         else:
