@@ -1,5 +1,4 @@
 ##### Error classes #####
-
 class digitError(Exception):
     pass
 
@@ -7,9 +6,7 @@ class jointError(Exception):
     pass
 
 ##### checking functions that make sure values are sane
-
 ##### variables defining various specifications #####
-
 jointWeight = {"wrist": 4,
             "cm":3,
             "mcp":3,
@@ -17,7 +14,6 @@ jointWeight = {"wrist": 4,
             "dip":1}
 
 ##### handshape class and recursion #####
-
 class armconfiguration:
     """Representation for arm configruations"""
     def __init__(self, hand, wrist):
@@ -33,11 +29,11 @@ class armconfiguration:
     		raise digitError("The wrist joint needs 3 degrees of freedom, got %s instead." % (str(wrist.df)))
     	else:
     		self.wrist = wrist
-        
         self.hand = hand
     
     def __repr__(self):
         return "%s(wrist=%r, hand=%r)" % (self.__class__.__name__, self.wrist, self.hand)
+        
     def __str__(self):
         return """armconfiguration:
 wrist: %s
@@ -104,7 +100,6 @@ class handconfigurationDelta(handconfiguration):
                         self.thumb.weightedDegreesDifferent()])
         return degDiff    
 
-
 class finger:
     """A finger"""
     def __init__(self, MCP, PIP, DIP):
@@ -130,7 +125,6 @@ class finger:
 		raise digitError("The PIP joint needs 1 degree of freedom, got %s instead." % (str(PIP.df)))
 	else:
 		self.PIP = PIP
-        
         # ensure the that DIP is a joint instance, and has 1 degree of freedom specified.
 	if isinstance(DIP, joint):
 		DIP = DIP
@@ -140,9 +134,10 @@ class finger:
 		raise digitError("The DIP joint needs 1 degree of freedom, got %s instead." % (str(DIP.df)))
 	else:
 		self.DIP = DIP
-    
+        
     def __repr__(self):
         return "%s(MCP=%r, PIP=%r, DIP=%r)" % (self.__class__.__name__, self.MCP, self.PIP, self.DIP)
+        
     def __str__(self):
         return """
   MCP: %s
@@ -179,7 +174,6 @@ class thumb:
 		raise digitError("The CM joint needs 2 degrees of freedom, got %s instead." % (str(CM.df)))
 	else:
 		self.CM = CM
-        
         # ensure the that MCP is a joint instance, and has 1 degree of freedom specified.
 	if isinstance(MCP, joint):
 		MCP = MCP
@@ -189,7 +183,6 @@ class thumb:
 		raise digitError("The MCP joint needs 1 degree of freedom, got %s instead." % (str(MCP.df)))
 	else:
 		self.MCP = MCP
-        
         # ensure the that IP is a joint instance, and has 1 degree of freedom specified.
 	if isinstance(IP, joint):
 		IP = IP
@@ -224,9 +217,7 @@ class thumbDelta(thumb):
         degDiff = sum([self.MCP.totalDegreesDifferent()*jointWeight["mcp"],self.IP.totalDegreesDifferent()*jointWeight["dip"],self.CM.totalDegreesDifferent()*jointWeight["cm"]])
         return degDiff
 
-
 ##### abstract articulator classes #####
-
 class joint:
     """a joint object"""
     def __init__(self, dfFlex=None, dfAbd=None, dfRot=None, dfPro=None):
@@ -238,12 +229,10 @@ class joint:
 		    raise jointError("The value for rotation must be a single integer. Got %s instead." % (str(dfRot)))
         if dfPro and type(dfPro) is not int:
 		    raise jointError("The value for pronation must be a single integer. Got %s instead." % (str(dfPro)))
-        
         self.dfFlex = dfFlex
         self.dfAbd = dfAbd
         self.dfRot = dfRot
         self.dfPro = dfPro
-	    
 	    # Count the number of degrees of freedom that are being used to return the dfs.
         self.df = sum([int(item != None) for item in (self.dfFlex,self.dfAbd,self.dfRot,self.dfPro )])
     
@@ -260,6 +249,7 @@ class joint:
     
     def __repr__(self):
         return "%s(dfFlex=%r, dfAbd=%r, dfRot=%r, dfPro=%r)" % (self.__class__.__name__, self.dfFlex, self.dfAbd, self.dfRot, self.dfPro)
+
     def __str__(self):
         return """dfFlex: %s, dfAbd: %s, dfRot: %s, dfPro: %s""" % (self.dfFlex, self.dfAbd, self.dfRot, self.dfPro)
 
@@ -284,18 +274,14 @@ class jointDelta(joint):
         degDiff = sum([dfFlexDiff,dfAbdDiff,dfRotDiff,dfProDiff])
         return degDiff
 
-
 ##### testing #####
-
 index = finger(MCP=(0,-15), PIP=0, DIP=0)
 middle = finger(MCP=(30,0), PIP=90, DIP=0)
 ring = finger(MCP=(0,0), PIP=0, DIP=0)
 pinky = finger(MCP=(0,0), PIP=0, DIP=0)
 thmb = thumb(CM=(0,0,0), MCP=0, IP=0)
 wrist = (0,0,0)
-
 hc1 = handconfiguration(index, middle, ring, pinky, thmb)
-
 arm1 = armconfiguration(hc1, wrist)
 
 index = finger(MCP=(0,0), PIP=0, DIP=0)
@@ -304,12 +290,9 @@ ring = finger(MCP=(90,0), PIP=0, DIP=0)
 pinky = finger(MCP=(0,0), PIP=0, DIP=0)
 thmb = thumb(CM=(0,0,0), MCP=0, IP=0)
 wrist = (0,0,0)
-
 hc2 = handconfiguration(index, middle, ring, pinky, thmb)
-
 arm2 = armconfiguration(hc1, wrist)
 
 hcDiff = hc1-hc2
-
 armDiff = arm1-arm2
 

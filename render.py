@@ -29,14 +29,12 @@ def ntz(value):
         value = 0
     return value
     
-
 def renderImage(hc, imageOutFile, baseHCposeFile=baseHCposeFile, baseHC=baseHC):
     ##### Read in the base pose to alter #####
     baseHCposefile = open(baseHCposeFile, "r")
     baseHCpose = yaml.load(baseHCposefile)
     baseHCposefile.close()
-    
-    
+
     newHCpose = baseHCpose
     diff = baseHC - hc
     
@@ -99,29 +97,7 @@ def renderImage(hc, imageOutFile, baseHCposeFile=baseHCposeFile, baseHC=baseHC):
     devnull = open('/dev/null', 'w')
     subprocess.call(cmd, stdout=devnull, stderr=subprocess.STDOUT)
     
-
-    # [diff.hand.index.MCP.dfFlex, diff.hand.index.MCP.dfAbd, diff.hand.index.MCP.dfRot]
-    # [diff.hand.index.PIP.dfFlex, diff.hand.index.PIP.dfAbd, diff.hand.index.PIP.dfRot]
-    # [diff.hand.index.DIP.dfFlex, diff.hand.index.DIP.dfAbd, diff.hand.index.DIP.dfRot]
-    # 
-    # 
-    # diff.hand.index.PIP.dfFlex
-    # diff.hand.index.PIP.dfAbd
-    # diff.hand.index.PIP.dfPro
-    # diff.hand.index.PIP.dfRot 
-    
-       
-
-
-    # print(baseHCpose)
-    
-    
-    
-
-    
-
 ##### Tests ######
-
 #ensure that all articulatory model specifications are readable
 if not path.exists("./let"):
    makedirs("./let")
@@ -141,31 +117,3 @@ for ltr in letters.lettersCols['letter']:
     #     print("Error with "+ltr+". can't convert from PM notation to AM handshape")
     #     break
     # renderImage(PMarm.toArmTarget(), path.join("./let/",''.join(["pm-",ltr,".png"])))   
-
-##### print all letters
-# if not path.exists("./let"):
-#    makedirs("./let")
-# for ltr in list(string.ascii_lowercase):
-#     renderImage(letters.letterToArm(ltr).toArmTarget(), path.join("./let/",''.join([ltr,".png"])))
-
-
-# l = hc.armconfiguration(wrist=hc.joint(dfFlex=-10, dfAbd=None, dfRot=0, dfPro=180),
-#                      hand=hc.handconfiguration(index=hc.finger(MCP=hc.joint(dfFlex=180, dfAbd=0, dfRot=None, dfPro=None), 
-#                                                          PIP=hc.joint(dfFlex=180, dfAbd=None, dfRot=None, dfPro=None), 
-#                                                          DIP=hc.joint(dfFlex=180, dfAbd=None, dfRot=None, dfPro=None)), 
-#                                             middle=hc.finger(MCP=hc.joint(dfFlex=90, dfAbd=0, dfRot=None, dfPro=None), 
-#                                                           PIP=hc.joint(dfFlex=90, dfAbd=None, dfRot=None, dfPro=None), 
-#                                                           DIP=hc.joint(dfFlex=90, dfAbd=None, dfRot=None, dfPro=None)), 
-#                                             ring=hc.finger(MCP=hc.joint(dfFlex=90, dfAbd=0, dfRot=None, dfPro=None), 
-#                                                         PIP=hc.joint(dfFlex=90, dfAbd=None, dfRot=None, dfPro=None), 
-#                                                         DIP=hc.joint(dfFlex=90, dfAbd=None, dfRot=None, dfPro=None)),
-#                                             pinky=hc.finger(MCP=hc.joint(dfFlex=90, dfAbd=0, dfRot=None, dfPro=None), 
-#                                                         PIP=hc.joint(dfFlex=90, dfAbd=None, dfRot=None, dfPro=None), 
-#                                                         DIP=hc.joint(dfFlex=90, dfAbd=None, dfRot=None, dfPro=None)), 
-#                                             thumb=hc.thumb(CM=hc.joint(dfFlex=None, dfAbd=90, dfRot=0, dfPro=None), 
-#                                                         MCP=hc.joint(dfFlex=180, dfAbd=None, dfRot=None, dfPro=None), 
-#                                                         IP=hc.joint(dfFlex=180, dfAbd=None, dfRot=None, dfPro=None))
-#                                             )
-#                         )
-#                         
-# renderImage(l, "l.png")

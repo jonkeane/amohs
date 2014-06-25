@@ -5,11 +5,8 @@ from os import path
 resources_dir = path.join(path.dirname(__file__), 'resources')
 
 ##### read in csvs containing information about the prosodic model notation system. #####
-
 def read_csv_data(path):
-    """
-        Reads CSV from given path and Return list of dict with Mapping
-    """
+    """Reads CSV from given path and Return list of dict with Mapping"""
     data = csv.reader(open(path))
     # Read the column names from the first line of the file
     fields = data.next()

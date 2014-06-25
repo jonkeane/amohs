@@ -13,9 +13,7 @@ class abductionError(Exception):
 class oppositionError(Exception):
     pass
 
-
 ##### variables defining phonological specifications #####
-
 digits = {"index", "middle", "ring", "pinky", "thumb"}
 
 phonoJoints = {"ext":180, "midExt":150, "mid":135, "midFlex":120, "flex":90}
@@ -32,7 +30,7 @@ phonoAbduction = {"index": {"abducted":20, "neutralAbducted":10, "adducted":0, "
                                          "unopposed": None},
                              "adducted":{"opposed": (-22,  13, -27), #c
                                          "unopposed": (23,  8, 0)},#g (a?)
-                             "negativeAbducted":{"opposed": (-34, -24, -53), #for t, using traditional methods. Copied from b below, but that's probably problematic.
+                             "negativeAbducted":{"opposed": (-34, -24, -53), #for t, using traditional methods. Copied from b below, but that needs some refining.
                                          "unopposed": (-34, -24, -53)}#b
                               }
                     }
@@ -44,7 +42,6 @@ phonoOrientations = {"default": (0,0,0), "defaultFS":(-10,0,0), "palmIn":(-75,0,
 reverseOrientations = dict(reversed(item) for item in phonoOrientations.items())
 
 ##### checking functions that make sure values are sane
-
 def fingerCheck(members, digits = digits):
     """Checks that members are all in the digits set"""
     # ensure that members is a set
@@ -82,9 +79,7 @@ def oppositionCheck(oppos, oppositions = phonoOpposition):
         raise oppositionError("The opposition provided is not in the opposition set.")
     return oppos
 
-
 ##### handshape class and recursion #####
-
 class arm:
     """Representation of wrist+handshape, to be expanded with elbow and shoulder later"""
     def __init__(self, handshape, orientation=None):
@@ -97,7 +92,6 @@ class arm:
     def toArmTarget(self):
         wrist = hc.joint(dfFlex=phonoOrientations[self.orientation][0], dfRot=phonoOrientations[self.orientation][1], dfPro=phonoOrientations[self.orientation][2])
         return hc.armconfiguration(hand=self.handshape.toHandconfigTarget() , wrist=wrist)
-
 
 class handshape:
     """Representation of handshapes using the articulatory model of handshape"""
@@ -112,7 +106,6 @@ class handshape:
             self.NSF.members = digits - (self.SF.members | self.SSF.members)
         elif self.NSF:
             self.NSF.members = digits - (self.SF.members)
-
         #make SSF and NSF are None if there are no members
         if self.SSF and len(self.SSF.members) == 0:
             self.SSF.members = None
@@ -192,6 +185,7 @@ class handshape:
         
     def __repr__(self):
         return "%s(selectedFingers=%r, secondarySelectedFingers=%r, thumb=%r, nonSelectedFingers=%r)" % (self.__class__.__name__, self.SF, self.SSF, self.thumb, self.NSF)
+
     def __str__(self):
         return """Handshape:
 Selected Fingers: %s
@@ -210,22 +204,18 @@ class selectedFingers:
             print("Selected finger digit error.")
             raise
         self.members = members
-
         # ensure the that MCP is a joint instance
         if isinstance(MCP, joint):
             self.MCP = MCP
         else:
             self.MCP = joint(MCP)
-            
         # ensure the that PIP is a joint instance            
         if isinstance(PIP, joint):
             self.PIP = PIP
         else:
             self.PIP = joint(PIP)
-
         # duplicate the PIP configuration to the DIP, this should be refined
         self.DIP = self.PIP 
-
         if isinstance(abd, abduction):
             self.abd = abd
         else:
@@ -233,6 +223,7 @@ class selectedFingers:
 
     def __repr__(self):
         return "%s(members=%r, MCP=%r, PIP=%r, abd=%r)" % (self.__class__.__name__, self.members, self.MCP, self.PIP, self.abd)
+
     def __str__(self):
         return """
   members: %s
@@ -250,27 +241,22 @@ class secondarySelectedFingers:
             print("Selected finger digit error.")
             raise
         self.members = members
-
         # ensure the that MCP is a joint instance
         if isinstance(MCP, joint):
             self.MCP = MCP
         else:
             self.MCP = joint(MCP)
-            
         # ensure the that PIP is a joint instance            
         if isinstance(PIP, joint):
             self.PIP = PIP
         else:
             self.PIP = joint(PIP)
-
         # duplicate the PIP configuration, this should be refined
         self.DIP = self.PIP
-
         if isinstance(abd, abduction):
             self.abd = abd
         else:
             self.abd = abduction(abd)
-
         # if members is empty, set all to None:
         if len(members) == 0:
             self.MCP = None
@@ -279,6 +265,7 @@ class secondarySelectedFingers:
             
     def __repr__(self):
         return "%s(members=%r, MCP=%r, PIP=%r, abd=%r)" % (self.__class__.__name__, self.members, self.MCP, self.PIP, self.abd)
+
     def __str__(self):
         return """
   members: %s
@@ -294,8 +281,10 @@ class thumb:
             self.oppos = oppos
         else:
             self.oppos = opposition(oppos)
+
     def __repr__(self):
         return "%s(oppos=%r)" % (self.__class__.__name__, self.oppos)
+
     def __str__(self):
         return """"
   Opposition: %s
@@ -318,16 +307,14 @@ class nonSelectedFingers:
         
     def __repr__(self):
         return "%s(joints=%r, members=%r)" % (self.__class__.__name__, self.joints, self.members)
+
     def __str__(self):
         return """
   members: %s
   joints: %s
 """ % (self.members, self.joints)
 
-
-
 ##### abstract articulator classes #####
-
 class joint:
     """a joint object"""
     def __init__(self, value):
@@ -340,6 +327,7 @@ class joint:
 
     def __repr__(self):
         return "%s(value=%r)" % (self.__class__.__name__, self.value)
+
     def __str__(self):
         return "%s" % (self.value)
 
@@ -355,6 +343,7 @@ class opposition:
 
     def __repr__(self):
         return "%s(value=%r)" % (self.__class__.__name__, self.value)
+
     def __str__(self):
         return "%s" % (self.value)
 
@@ -370,22 +359,19 @@ class abduction:
         
     def __repr__(self):
         return "%s(value=%r)" % (self.__class__.__name__, self.value)
+
     def __str__(self):
         return "%s" % (self.value)    
 
 
 ##### testing #####
-
 foo = handshape(
     selectedFingers = selectedFingers(members = ["index", "middle"], MCP=joint("ext"), PIP="ext", abd=abduction("adducted")),
     secondarySelectedFingers = None,
     thumb = thumb(oppos=None),
     nonSelectedFingers = nonSelectedFingers(joints="flex")
     )
-
 bar = foo.toHandconfigTarget()
-
 baz = arm(handshape=foo, orientation="defaultFS")
-
 qux = baz.toArmTarget()
 
