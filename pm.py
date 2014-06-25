@@ -24,9 +24,6 @@ abdCodingCols = funcs.dictToCols(abdCodingKey)
 psfabdCodingCols = funcs.dictColMapper(abdCodingKey, "psf")
 ssfabdCodingCols = funcs.dictColMapper(abdCodingKey, "psf") #ssf is the same as the psf for abduction.
 
-
-ssfabdCodingCols
-
 def shortToMember(string):
     map = {'I': 'index',
            'M': 'middle',
@@ -37,9 +34,7 @@ def shortToMember(string):
     out = [map[x] for x in list(string)]
     return out
     
-
 ##### prosodic model notation class #####
-
 class selectedFingers:
     """a class for selected fingers based on the PM notation system in Eccarius and Brentari 2008 of the type 1T-^@;1T-@;#"""
     def __init__(self, string):
@@ -97,17 +92,14 @@ class selectedFingers:
                 raise notationError("Unknown joint symbol in selected fingers")
         else:
             self.joint = symbolUp
-
         # test to ensure there's no string left.
         if len(stringList) > 0:
             raise notationError("There's still unparsed string left in the selected finger substring.")
-
 
 class secondarySelectedFingers:
     """a class for secondary selected fingers based on the PM notation system in Eccarius and Brentari 2008 of the type 1T-^@;1T-@;#"""
     def __init__(self, string):
         stringList = list(string)
-        
         # Secondary selected finger symbols
         # fingers
         symbolUp = stringList.pop(0).upper()
@@ -141,7 +133,6 @@ class secondarySelectedFingers:
                 symbolUp = stringList.pop(0)
             except IndexError:
                 symbolUp = None
-                
         # abduction doesn't exist in PM notation for secondary selected fingers, but should be and is accounted for here.
         if symbolUp: symbolUp = symbolUp.lower()                
         if symbolUp not in set(abdCodingCols["psf"]):
@@ -152,7 +143,6 @@ class secondarySelectedFingers:
                 symbolUp = stringList.pop(0)
             except IndexError:
                 symbolUp = None
-
         # joint
         if symbolUp: symbolUp = symbolUp.lower()                
         if symbolUp not in set(jointCodingCols["psf"]):
@@ -162,7 +152,6 @@ class secondarySelectedFingers:
                 raise notationError("Unknown joint symbol in secondary selected fingers")
         else:
             self.joint = symbolUp
-
         # test to ensure there's no string left.
         if len(stringList) > 0:
             raise notationError("There's still unparsed string left in the secondary selected finger substring.")
@@ -180,11 +169,9 @@ class nonSelectedFingers:
                 raise notationError("Unknown joint symbol in nonselected fingers")
         else:
             self.joint = symbolUp
-
         # test to ensure there's no string left.
         if len(stringList) > 0:
             raise notationError("There's still unparsed string left in the nonselected finger substring.")
-
 
 class pmHandshape:
     """a class based on the PM notation system in Eccarius and Brentari 2008 of the type 1T-^@;1T-@;#"""
@@ -206,14 +193,12 @@ class pmHandshape:
         except IndexError:
             self.SSF = None
             self.NSF = None
-
         if len(strings) > 0:
             raise notationError("There's still unparsed string left: "+str(strings))
+            
     def toAMhandshape(self):
-        
         # set default value for the thumb: opposed
         oppos = "opposed"
-        
         # translate the selected fingers        
         if self.SF.fing:
             sfMem = shortToMember(bsfingerCodingCols[self.SF.fing]['fingers'])
@@ -237,7 +222,6 @@ class pmHandshape:
             sfMCP = psfjointCodingCols['empty']['MCP']
             sfPIP = psfjointCodingCols['empty']['PIP']
         sf =  hs.selectedFingers(members = sfMem, MCP=sfMCP, PIP=sfPIP, abd=sfAbd)
-
         # translate the secondary selected fingers
         if self.SSF:
             if self.SSF.fing:
@@ -264,7 +248,6 @@ class pmHandshape:
             ssf = hs.secondarySelectedFingers(members = ssfMem, MCP=ssfMCP, PIP=ssfPIP, abd=ssfAbd)
         else:
             ssf = None
-
         # translate the nonselected fingers
         if self.NSF:
             if self.NSF.joint:
@@ -274,15 +257,11 @@ class pmHandshape:
             nsf = hs.nonSelectedFingers(joints=ssfJoints)
         else:
             nsf = None
-        
         thumb = hs.thumb(oppos=oppos)
-
         AMhandshape = hs.handshape(selectedFingers = sf, secondarySelectedFingers = ssf, thumb = thumb, nonSelectedFingers = nsf )
-        
         return AMhandshape
 
 ##### test #####
-
 foo = pmHandshape("1;#")
 bar = foo.toAMhandshape()
 baz = bar.toHandconfigTarget()
