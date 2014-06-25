@@ -22,6 +22,10 @@ abdCodingKeyFile = path.join(funcs.resources_dir,'abdCodingKey.csv')
 abdCodingKey = funcs.read_csv_data(abdCodingKeyFile)
 abdCodingCols = funcs.dictToCols(abdCodingKey)
 psfabdCodingCols = funcs.dictColMapper(abdCodingKey, "psf")
+ssfabdCodingCols = funcs.dictColMapper(abdCodingKey, "psf") #ssf is the same as the psf for abduction.
+
+
+ssfabdCodingCols
 
 def shortToMember(string):
     map = {'I': 'index',
@@ -137,12 +141,16 @@ class secondarySelectedFingers:
                 symbolUp = stringList.pop(0)
             except IndexError:
                 symbolUp = None
-        # abduction doesn't exist in PM notation
-        ## if symbolUp not in set(abdCodingCols["psf"]):
-        ##     self.abd = None
-        ## else:
-        ##     self.abd = symbolUp
-        ##     symbolUp = stringList.pop(0)
+        # abduction doesn't exist in PM notation, but is accounted for here.
+        if symbolUp: symbolUp = symbolUp.lower()                
+        if symbolUp not in set(abdCodingCols["psf"]):
+            self.abd = None
+        else:
+            self.abd = symbolUp
+            try:
+                symbolUp = stringList.pop(0)
+            except IndexError:
+                symbolUp = None
 
         # joint
         if symbolUp: symbolUp = symbolUp.lower()                
@@ -199,17 +207,24 @@ class pmHandshape:
             self.NSF = None
 
         if len(strings) > 0:
-            raise notationError("There's still unparsed string left.")
+            raise notationError("There's still unparsed string left: "+str(strings))
     def toAMhandshape(self):
-        # translate the selected fingers
+        
+        # set default value for the thumb: opposed
+        oppos = "opposed"
+        
+        # translate the selected fingers        
         if self.SF.fing:
             sfMem = shortToMember(bsfingerCodingCols[self.SF.fing]['fingers'])
         if self.SF.thumb and self.SF.thumb == "T" :
-            sfMem.append("thumb")
+            try:
+                sfMem.append("thumb")
+            except UnboundLocalError:
+                sfMem = ["thumb"]            
         if self.SF.oppos and self.SF.oppos == "-":
-            sfOppos = "unopposed"
+            oppos = "unopposed"
         else:
-            sfOppos = None
+            oppos = "opposed"
         if self.SF.abd:
             sfAbd = psfabdCodingCols[self.SF.abd]['abd']
         else:
@@ -227,11 +242,14 @@ class pmHandshape:
             if self.SSF.fing:
                 ssfMem = shortToMember(bsfingerCodingCols[self.SSF.fing]['fingers'])
             if self.SSF.thumb and self.SSF.thumb == "T" :
-                ssfMem.append("thumb")
+                try:
+                    ssfMem.append("thumb")
+                except UnboundLocalError:
+                    ssfMem = ["thumb"]
             if self.SSF.oppos and self.SSF.oppos == "-":
-                ssfOppos = "unopposed"
+                oppos = "unopposed"
             else:
-                ssfOppos = None
+                oppos = "opposed"
             if self.SSF.abd:
                 ssfAbd = ssfabdCodingCols[self.SSF.abd]['abd']
             else:
@@ -255,8 +273,10 @@ class pmHandshape:
             nsf = hs.nonSelectedFingers(joints=ssfJoints)
         else:
             nsf = None
+        
+        thumb = hs.thumb(oppos=oppos)
 
-        AMhandshape = hs.handshape(selectedFingers = sf, secondarySelectedFingers = ssf, thumb = None, nonSelectedFingers = nsf )
+        AMhandshape = hs.handshape(selectedFingers = sf, secondarySelectedFingers = ssf, thumb = thumb, nonSelectedFingers = nsf )
         
         return AMhandshape
 

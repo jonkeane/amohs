@@ -87,7 +87,8 @@ def renderImage(hc, imageOutFile, baseHCposeFile=baseHCposeFile, baseHC=baseHC):
     if not path.exists(path.join(funcs.resources_dir,"tmp")):
         makedirs(path.join(funcs.resources_dir,"tmp"))
     
-    poseOutFilePath = path.join(funcs.resources_dir,''.join(["tmp/",imageOutFile[-5:-4],"poseOut.yml"]))
+    poseOutFilePath = path.join(funcs.resources_dir,''.join(["tmp/",path.basename(imageOutFile),"poseOut.yml"]))
+    print(poseOutFilePath)
     poseOutFile = open(poseOutFilePath, 'w') 
     poseOutFile.write("%YAML:1.0\n")
     yaml.dump(newHCpose, poseOutFile)
@@ -120,6 +121,26 @@ def renderImage(hc, imageOutFile, baseHCposeFile=baseHCposeFile, baseHC=baseHC):
     
 
 ##### Tests ######
+
+#ensure that all articulatory model specifications are readable
+if not path.exists("./let"):
+   makedirs("./let")
+for ltr in letters.lettersCols['letter']:
+    try:
+        AMarm = letters.letterToArm(ltr)
+    except:
+        print("error with "+ltr+". can't convert from articulatory specifications to AM handshape")   
+        break
+    pth = path.join("./let/",''.join(["am-",ltr,".png"]))
+    print(pth)
+    renderImage(AMarm.toArmTarget(), pth)    
+    
+    # try:
+    #     PMarm = hs.arm(handshape=letters.letterToPM(ltr).toAMhandshape(), orientation=letters.letterCodingCols[ltr]["orientation"])
+    # except:
+    #     print("Error with "+ltr+". can't convert from PM notation to AM handshape")
+    #     break
+    # renderImage(PMarm.toArmTarget(), path.join("./let/",''.join(["pm-",ltr,".png"])))   
 
 ##### print all letters
 # if not path.exists("./let"):

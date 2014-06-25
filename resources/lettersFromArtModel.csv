@@ -1,35 +1,46 @@
-letter,psf-members,psf-mcp,psf-pip,psf-abd,ssf-members,ssf-mcp,ssf-pip,ssf-abd,thumb-oppos,nsf-members,nsf-joints,orientation
-a traditional,"index,middle,ring,pinky",flex,flex,adducted,None,None,None,None,None,thumb,ext,defaultFS
-a,"index,middle,ring,pinky",flex,flex,adducted,thumb,mid,ext,adducted,unopposed,None,None,defaultFS
-b traditional,"index,middle,ring,pinky",ext,ext,adducted,None,None,None,None,None,thumb,flex,defaultFS
-b,"index,middle,ring,pinky",ext,ext,adducted,thumb,mid,ext,negativeAbducted,unopposed,None,None,defaultFS
-c,"index,middle,ring,pinky,thumb",ext,mid,adducted,None,None,None,None,opposed,None,None,defaultFS
-d big,"middle,ring,pinky,thumb",flex,mid,adducted,None,None,None,None,opposed,index,ext,defaultFS
-d,"middle,thumb",mid,mid,adducted,index,ext,ext,adducted,opposed,"ring,pinky",flex,defaultFS
-e open,"index,middle,ring,pinky,thumb",ext,flex,adducted,None,None,None,None,opposed,None,None,defaultFS
-e,"index,middle,ring,pinky,thumb",mid,flex,adducted,None,None,None,None,opposed,None,None,defaultFS
-f,"index,thumb",mid,mid,adducted,None,None,None,None,opposed,"middle,ring,pinky",ext,defaultFS
-g,"index,thumb",ext,ext,adducted,None,None,None,None,opposed,"middle,ring,pinky",flex,palmIn
-g thumb,"index,thumb",ext,ext,adducted,None,None,None,None,unopposed,"middle,ring,pinky",flex,palmIn
-h,"index,middle",ext,ext,adducted,None,None,None,None,None,"ring,pinky,thumb",flex,palmIn
-i,pinky,ext,ext,adducted,None,None,None,None,None,"index,middle,ring,thumb",flex,defaultFS
-j,pinky,ext,ext,adducted,None,None,None,None,None,"index,middle,ring,thumb",flex,defaultFS
-k,middle,flex,ext,adducted,index,ext,ext,adducted,None,"ring,pinky,thumb",flex,defaultFS
-l traditional,"index,thumb",ext,ext,adducted,None,None,None,None,unopposed,"middle,ring,pinky",flex,defaultFS
-l,index,ext,ext,adducted,thumb,ext,ext,abducted,unopposed,"middle,ring,pinky",flex,defaultFS
-m closed,"index,middle,ring",flex,flex,adducted,None,None,None,None,None,"pinky,thumb",flex,defaultFS
-m,"index,middle,ring",flex,ext,adducted,None,None,None,None,None,"pinky,thumb",flex,defaultFS
-n closed,"index,middle",flex,flex,adducted,None,None,None,None,None,"ring,pinky,thumb",flex,defaultFS
-n,"index,middle",flex,ext,adducted,None,None,None,None,None,"ring,pinky,thumb",flex,defaultFS
-o,"index,middle,ring,pinky,thumb",mid,mid,adducted,None,None,None,None,opposed,None,None,defaultFS
-p,middle,flex,ext,adducted,index,ext,ext,adducted,None,"ring,pinky,thumb",flex,palmDown
-q,"index,thumb",ext,ext,adducted,None,None,None,None,opposed,"middle,ring,pinky",flex,palmDown
-r,"index,middle",ext,ext,negativeAbducted,None,None,None,None,None,"ring,pinky,thumb",flex,defaultFS
-s,"index,middle,ring,pinky,thumb",flex,flex,adducted,None,None,None,None,opposed,None,None,defaultFS
-t,index,flex,mid,adducted,None,None,None,None,None,"middle,ring,pinky,thumb",flex,defaultFS
-u,"index,middle",ext,ext,adducted,None,None,None,None,None,"ring,pinky,thumb",flex,defaultFS
-v,"index,middle",ext,ext,abducted,None,None,None,None,None,"ring,pinky,thumb",flex,defaultFS
-w,"index,middle,ring",ext,ext,abducted,None,None,None,None,None,"pinky,thumb",flex,defaultFS
-x,index,ext,flex,adducted,None,None,None,None,None,"middle,ring,pinky,thumb",flex,defaultFS
-y,"pinky,thumb",ext,ext,abducted,None,None,None,None,unopposed,"index,middle,ring",flex,defaultFS
-z,index,ext,ext,adducted,None,None,None,None,None,"middle,ring,pinky,thumb",flex,defaultFS
+letter,psf-members,psf-mcp,psf-pip,psf-abd,ssf-members,ssf-mcp,ssf-pip,ssf-abd,thumb-oppos,nsf-members,nsf-joints,orientation,pmCode,comments
+a traditional,"index,middle,ring,pinky",flex,flex,adducted,None,None,None,None,None,thumb,ext,defaultFS,B@;/,
+a,"index,middle,ring,pinky",flex,flex,adducted,thumb,mid,ext,adducted,unopposed,None,None,defaultFS,B@;T-<,
+b traditional,"index,middle,ring,pinky",ext,ext,adducted,None,None,None,None,None,thumb,flex,defaultFS,B;#,
+b,"index,middle,ring,pinky",ext,ext,adducted,thumb,mid,ext,negativeAbducted,unopposed,None,None,defaultFS,B;T-x<,the unopposed v. negative abducted here is weird
+c traditional,"index,middle,ring,pinky,thumb",mid,mid,adducted,None,None,None,None,opposed,None,None,defaultFS,BTc,
+c,"index,middle,ring,pinky,thumb",ext,mid,adducted,None,None,None,None,opposed,None,None,defaultFS,BT(,
+d big,"middle,ring,pinky,thumb",flex,mid,adducted,None,None,None,None,opposed,index,ext,defaultFS,DTo;/,
+d traditional,"middle,thumb",flex,mid,adducted,index,ext,ext,adducted,opposed,"ring,pinky",flex,defaultFS,8To;1;#,
+d,"middle,thumb",mid,mid,adducted,index,ext,ext,adducted,opposed,"ring,pinky",flex,defaultFS,8Tc;1;#,
+e open traditional,"index,middle,ring,pinky,thumb",ext,flex,adducted,None,None,None,None,opposed,None,None,defaultFS,BT[,
+e open,"index,middle,ring,pinky,thumb",ext,flex,adducted,None,None,None,None,opposed,None,None,defaultFS,BT[,
+e,"index,middle,ring,pinky,thumb",mid,flex,adducted,None,None,None,None,opposed,None,None,defaultFS,BTe,
+e traditional,"index,middle,ring,pinky",ext,flex,adducted,None,None,None,None,None,thumb,flex,defaultFS,B[;#,
+e alternate,"index,middle,ring,pinky",mid,flex,adducted,None,None,None,None,None,thumb,flex,defaultFS,Be;#,
+f traditional,"index,thumb",flex,mid,adducted,None,None,None,None,opposed,"middle,ring,pinky",ext,defaultFS,1To;/,
+f,"index,thumb",mid,mid,adducted,None,None,None,None,opposed,"middle,ring,pinky",ext,defaultFS,1Tc;/,
+g traditional,index,ext,ext,adducted,thumb,ext,ext,adducted,opposed,"middle,ring,pinky",flex,palmIn,1;T;#,
+g,"index,thumb",ext,ext,adducted,None,None,None,None,opposed,"middle,ring,pinky",flex,palmIn,1T;#,
+g thumb,"index,thumb",ext,ext,adducted,None,None,None,None,unopposed,"middle,ring,pinky",flex,palmIn,1T-;#,
+h,"index,middle",ext,ext,adducted,None,None,None,None,None,"ring,pinky,thumb",flex,palmIn,U;#,
+i,pinky,ext,ext,adducted,None,None,None,None,None,"index,middle,ring,thumb",flex,defaultFS,J;#,
+j,pinky,ext,ext,adducted,None,None,None,None,None,"index,middle,ring,thumb",flex,defaultFS,J;#,
+k,index,ext,ext,adducted,middle,flex,ext,adducted,None,"ring,pinky,thumb",flex,defaultFS,1;8>;#,
+k traditional,middle,flex,ext,adducted,index,ext,ext,adducted,None,"ring,pinky,thumb",flex,defaultFS,Uk;T;#,the articulatory features are wrong because stacking is not implemented
+l traditional,"index,thumb",ext,ext,adducted,None,None,None,None,unopposed,"middle,ring,pinky",flex,defaultFS,1T-;#,
+l,index,ext,ext,adducted,thumb,ext,ext,abducted,unopposed,"middle,ring,pinky",flex,defaultFS,1;T-^;#,
+m closed,"index,middle,ring",flex,flex,adducted,None,None,None,None,None,"pinky,thumb",flex,defaultFS,M@;#,
+m,"index,middle,ring",flex,ext,adducted,None,None,None,None,None,"pinky,thumb",flex,defaultFS,M>;#,
+n closed,"index,middle",flex,flex,adducted,None,None,None,None,None,"ring,pinky,thumb",flex,defaultFS,U@;#,
+n,"index,middle",flex,ext,adducted,None,None,None,None,None,"ring,pinky,thumb",flex,defaultFS,U>;#,
+o traditional,"index,middle,ring,pinky,thumb",flex,mid,adducted,None,None,None,None,opposed,None,None,defaultFS,BTo,
+o,"index,middle,ring,pinky,thumb",mid,mid,adducted,None,None,None,None,opposed,None,None,defaultFS,BTc,
+p,index,ext,ext,adducted,middle,flex,ext,adducted,None,"ring,pinky,thumb",flex,palmDown,1;8>;#,
+q traditional,index,ext,ext,adducted,thumb,ext,ext,adducted,opposed,"middle,ring,pinky",flex,palmDown,1;T;#,
+q,"index,thumb",ext,ext,adducted,None,None,None,None,opposed,"middle,ring,pinky",flex,palmDown,1T;#,
+r,"index,middle",ext,ext,negativeAbducted,None,None,None,None,None,"ring,pinky,thumb",flex,defaultFS,Ux;#,
+s,"index,middle,ring,pinky,thumb",flex,flex,adducted,None,None,None,None,opposed,None,None,defaultFS,BT@,
+t traditional,"index,thumb",flex,flex,negativeAbducted,None,None,None,None,opposed,"middle,ring,pinky",flex,defaultFS,1Tx@;#,
+t,index,flex,mid,adducted,None,None,None,None,None,"middle,ring,pinky,thumb",flex,defaultFS,1o;#,
+u,"index,middle",ext,ext,adducted,None,None,None,None,None,"ring,pinky,thumb",flex,defaultFS,U;#,
+v,"index,middle",ext,ext,abducted,None,None,None,None,None,"ring,pinky,thumb",flex,defaultFS,U^;#,
+w,"index,middle,ring",ext,ext,abducted,None,None,None,None,None,"pinky,thumb",flex,defaultFS,M^;#,
+x,index,ext,flex,adducted,None,None,None,None,None,"middle,ring,pinky,thumb",flex,defaultFS,1[;#,
+y,"pinky,thumb",ext,ext,abducted,None,None,None,None,unopposed,"index,middle,ring",flex,defaultFS,JT-^;#,
+z,index,ext,ext,adducted,None,None,None,None,None,"middle,ring,pinky,thumb",flex,defaultFS,1;#,

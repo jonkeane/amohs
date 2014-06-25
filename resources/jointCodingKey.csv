@@ -1,16 +1,19 @@
 psf,ssf,nsf,joint config,pmfeatures,MCP,PIP,abd,
 empty,empty,/,extended,,ext,ext,add,
-c,None,None,curved-open (narrow),nonbase+base,midFlex,mid,add,
-(,None,None,curved-open(wide),nonbase+base,midExt,mid,add,
+c,None,None,curved-open (narrow),nonbase+base,mid,mid,add,
+(,None,None,curved-open(wide),nonbase+base,ext,mid,add,
 o,o,None,curved-closed,flex+nonbase+base or (flex+base)+nonbase,flex,mid,add,
-<,None,None,flat-open,base,mid,ext,add,
->,None,None,flat-closed,flex+base,flex,ext,add,
+<,<,None,flat-open,base,mid,ext,add,
+>,>,None,flat-closed,flex+base,flex,ext,add,
 [,None,None,bent,flex+nonbase,ext,flex,add,
 @,@,#,closed,flex,flex,flex,add,
-?1,?1,?1,bent?,?,ext,mid,add,not in HS coding article
-?2,?2,?1,?,?,mid,mid,add,not in HS coding article
-?3,?3,?1,?,?,mid,flex,add,not in HS coding article
+e,e,?1,?,?,mid,flex,add,not in HS coding article
+,,,,,,,,
+?v,?v,?1,bent?,?,ext,mid,add,not needed without midFlex/midExt
+?m,?m,?1,?,?,mid,mid,add,not needed without midFlex/midExt
 ?4,?4,?1,?,?,midFlex,ext,add,not in HS coding article
 ?5,?5,?1,?,?,midFlex,flex,add,not in HS coding article
 ?6,?6,?1,?,?,midExt,ext,add,not in HS coding article
 ?7,?7,?1,?,?,midExt,flex,add,not in HS coding article
+c old,None,None,curved-open (narrow),nonbase+base,midFlex,mid,add,
+( old,None,None,curved-open(wide),nonbase+base,midExt,mid,add,

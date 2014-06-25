@@ -1,4 +1,5 @@
 import hs
+import pm
 import funcs
 
 import csv
@@ -10,7 +11,7 @@ class specificationError(Exception):
 
 
 ##### Read in csvs with letter specifications #####
-lettersFile =path.join(funcs.resources_dir,'lettersFromArtModel.csv')
+lettersFile = path.join(funcs.resources_dir,'lettersFromArtModel.csv')
 lettersKey = funcs.read_csv_data(lettersFile)
 lettersCols = funcs.dictToCols(lettersKey)
 letterCodingCols = funcs.dictColMapper(lettersKey, "letter")
@@ -88,7 +89,7 @@ def similarity(stringA, stringB, method="unweighted"):
         raise specificationError("The strings are not of the same length, cannot compare without some sort of editing")
     cost = []
     for pair in zip(stringA,stringB):
-        c =  letterToArm(pair[0]).toArmTarget()-letterToArm(pair[1]).toArmTarget()
+        c = letterToArm(pair[0]).toArmTarget()-letterToArm(pair[1]).toArmTarget()
         if method == "unweighted":
             c = c.totalDegreesDifferent()
         elif method == "weighted":
@@ -98,11 +99,60 @@ def similarity(stringA, stringB, method="unweighted"):
         cost.append(c)
     return sum(cost)    
     
-
-         
-
+def letterToPM(letter):
+    """converts a letter to a prosodic model code"""
+    try:
+        let = letterCodingCols[letter]
+    except KeyError:
+        print("That is not a recognized letter")
+        raise
         
-foo = letterToArm("p")
-bar = letterToArm("k")
+    return pm.pmHandshape(let["pmCode"])
+    
+    
+#### tests
 
-baz = foo.toArmTarget()-bar.toArmTarget()
+#ensure that all pm codes are readable
+for ltr in lettersCols['letter']:
+    try:
+        letterToPM(ltr).toAMhandshape()
+    except:
+        print("Error with "+ltr+". can't convert from PM notation to AM handshape")
+        
+        
+#ensure that all articulatory model specifications are readable
+for ltr in lettersCols['letter']:
+    try:
+        letterToArm(ltr)
+    except:
+        print("error with "+ltr+". can't convert from articulatory specifications to AM handshape")
+        
+        
+        
+#ensure that all articulatory model specifications are readable
+for ltr in lettersCols['letter']:
+    try:
+        AMarm = letterToArm(ltr)
+    except:
+        print("error with "+ltr+". can't convert from articulatory specifications to AM handshape")   
+        break
+    try:
+        PMarm = hs.arm(handshape=letterToPM(ltr).toAMhandshape(), orientation=letterCodingCols[ltr]["orientation"])
+    except:
+        print("Error with "+ltr+". can't convert from PM notation to AM handshape")
+        break
+    
+    AMPMdiff = AMarm.toArmTarget()-PMarm.toArmTarget()
+    if AMPMdiff.totalDegreesDifferent() > 0:
+        print("The difference between the PM and AM for "+ltr+" is "+str(AMPMdiff.totalDegreesDifferent())+" degrees.")
+        print("Articulatory model:")
+        print(AMarm.toArmTarget())
+        print("Prosodic model:")
+        print(PMarm.toArmTarget())        
+
+    
+        
+    
+# foo = letterToPM("p")
+# bar = letterToPM("k")
+# baz = foo.toArmTarget()-bar.toArmTarget()

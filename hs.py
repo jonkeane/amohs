@@ -32,7 +32,7 @@ phonoAbduction = {"index": {"abducted":20, "neutralAbducted":10, "adducted":0, "
                                          "unopposed": None},
                              "adducted":{"opposed": (-22,  13, -27), #c
                                          "unopposed": (23,  8, 0)},#g (a?)
-                             "negativeAbducted":{"opposed": None,
+                             "negativeAbducted":{"opposed": (-34, -24, -53), #for t, using traditional methods. Copied from b below, but that's probably problematic.
                                          "unopposed": (-34, -24, -53)}#b
                               }
                     }
@@ -73,7 +73,7 @@ def abdCheck(abd, abds = phonoAbduction):
     if abd == None:
         abd = "adducted"
     if not abd in abds:
-        raise abductionError("The abduction provided is not in the abduction set.")
+        raise abductionError("The abduction provided ("+str(abd)+") is not in the abduction set.")
     return abd
 
 def oppositionCheck(oppos, oppositions = phonoOpposition):
