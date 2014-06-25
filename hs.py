@@ -37,8 +37,6 @@ phonoAbduction = {"index": {"abducted":20, "neutralAbducted":10, "adducted":0, "
                               }
                     }
                     
-#phonoThumbAbduction = {"abducted":45, "neutralAbducted":20, "adducted":10, "negativeAbducted":-20}
-
 phonoOpposition = {"opposed":-60, "unopposed":-10}
 reverseOpposition = dict(reversed(item) for item in phonoOpposition.items())
 
@@ -115,7 +113,7 @@ class handshape:
         elif self.NSF:
             self.NSF.members = digits - (self.SF.members)
 
-        #make SSF and NSF None if there are no members
+        #make SSF and NSF are None if there are no members
         if self.SSF and len(self.SSF.members) == 0:
             self.SSF.members = None
         if self.NSF and len(self.NSF.members) == 0:
@@ -225,8 +223,8 @@ class selectedFingers:
         else:
             self.PIP = joint(PIP)
 
-        # duplicate the PIP configuration
-        self.DIP = self.PIP # how to compute?
+        # duplicate the PIP configuration to the DIP, this should be refined
+        self.DIP = self.PIP 
 
         if isinstance(abd, abduction):
             self.abd = abd
@@ -265,8 +263,8 @@ class secondarySelectedFingers:
         else:
             self.PIP = joint(PIP)
 
-        # duplicate the PIP configuration
-        self.DIP = self.PIP # how to compute?
+        # duplicate the PIP configuration, this should be refined
+        self.DIP = self.PIP
 
         if isinstance(abd, abduction):
             self.abd = abd
@@ -317,10 +315,6 @@ class nonSelectedFingers:
             self.joints = joints
         else:
             self.joints = joint(joints)        
-
-        ## # if members is empty, set joints to None: breaks because the members are defined by handshape class.
-        ## if len(members) == 0:
-        ##     self.joints = None
         
     def __repr__(self):
         return "%s(joints=%r, members=%r)" % (self.__class__.__name__, self.joints, self.members)

@@ -141,7 +141,8 @@ class secondarySelectedFingers:
                 symbolUp = stringList.pop(0)
             except IndexError:
                 symbolUp = None
-        # abduction doesn't exist in PM notation, but is accounted for here.
+                
+        # abduction doesn't exist in PM notation for secondary selected fingers, but should be and is accounted for here.
         if symbolUp: symbolUp = symbolUp.lower()                
         if symbolUp not in set(abdCodingCols["psf"]):
             self.abd = None
@@ -281,12 +282,12 @@ class pmHandshape:
         return AMhandshape
 
 ##### test #####
-# 
-# foo = pmHandshape("1;#")
-# bar = foo.toAMhandshape()
-# baz = bar.toHandconfigTarget()
-# 
-# foo1 = pmHandshape("DT@;/")
-# bar1 = foo1.toAMhandshape()
-# print(bar1)
-# baz1 = bar1.toHandconfigTarget()
+
+foo = pmHandshape("1;#")
+bar = foo.toAMhandshape()
+baz = bar.toHandconfigTarget()
+
+foo1 = pmHandshape("DT@;/")
+bar1 = foo1.toAMhandshape()
+
+baz1 = bar1.toHandconfigTarget()
