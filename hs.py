@@ -31,7 +31,7 @@ phonoAbduction = {"index": {"abducted":20, "neutralAbducted":10, "adducted":0, "
                              "adducted":{"opposed": (-22,  13, -27), #c
                                          "unopposed": (23,  8, 0)},#g (a?)
                              "negativeAbducted":{"opposed": (-34, -24, -53), #for t, using traditional methods. Copied from b below, but that needs some refining.
-                                         "unopposed": (-34, -24, -53)}#b
+                                         "unopposed": None}#b
                               }
                     }
                     

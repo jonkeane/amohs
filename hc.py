@@ -11,6 +11,7 @@ jointWeight = {"wrist": 4,
             "cm":3,
             "mcp":3,
             "pip":2,
+            "ip":1,
             "dip":1}
 
 ##### handshape class and recursion #####
@@ -214,7 +215,7 @@ class thumbDelta(thumb):
         return degDiff
 
     def weightedDegreesDifferent(self):
-        degDiff = sum([self.MCP.totalDegreesDifferent()*jointWeight["mcp"],self.IP.totalDegreesDifferent()*jointWeight["dip"],self.CM.totalDegreesDifferent()*jointWeight["cm"]])
+        degDiff = sum([self.MCP.totalDegreesDifferent()*jointWeight["mcp"],self.IP.totalDegreesDifferent()*jointWeight["ip"],self.CM.totalDegreesDifferent()*jointWeight["cm"]])
         return degDiff
 
 ##### abstract articulator classes #####
