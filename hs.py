@@ -286,7 +286,7 @@ class thumb:
         return "%s(oppos=%r)" % (self.__class__.__name__, self.oppos)
 
     def __str__(self):
-        return """"
+        return """
   Opposition: %s
 """ % (self.oppos)
     
